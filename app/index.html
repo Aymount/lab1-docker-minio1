@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Azure Lab 1</title>
+</head>
+<body>
+  <h1>☁️ Azure Lab 1 — Docker + MinIO</h1>
+  <input type="file" id="fileInput">
+  <button onclick="uploadFile()">Envoyer</button>
+  <h2>Fichiers stockés</h2>
+  <div id="fileList"></div>
+
+<script>
+async function uploadFile() {
+  const file = document.getElementById("fileInput").files[0];
+  const fd = new FormData();
+  fd.append("file", file);
+  await fetch("/api/upload", { method: "POST", body: fd });
+  loadFiles();
+}
+
+async function loadFiles() {
+  const r = await fetch("/api/files");
+  const d = await r.json();
+  document.getElementById("fileList").innerHTML =
+    d.files.map(f => `<p>📄 ${f}</p>`).join("");
+}
+loadFiles();
+</script>
+</body>
+</html>

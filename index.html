@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Lab MinIO - Upload</title>
+  </head>
+  <body>
+    <h1>Upload vers MinIO</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <button type="submit">Envoyer</button>
+    </form>
+    <h2>Fichiers</h2>
+    <ul id="files"></ul>
+
+    <script>
+      async function load() {
+        const res = await fetch('/list');
+        const items = await res.json();
+        const ul = document.getElementById('files');
+        ul.innerHTML = '';
+        items.forEach(i => {
+          const li = document.createElement('li');
+          li.textContent = `${i.name} (${i.size} bytes)`;
+          ul.appendChild(li);
+        });
+      }
+      load();
+    </script>
+  </body>
+</html>
